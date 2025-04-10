@@ -115,7 +115,6 @@ const productsContainer = document.getElementById("cart-product-contianer");
 const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
 
-
 /*data and variables */
 
 /****************************CART LOGIC - CLOSURE **********************/
@@ -132,7 +131,7 @@ function CreateCart() {
       const { name, price } = product;
       items.push(product);
 
-// Update item counts
+      // Update item counts
       itemCounts[id] = (itemCounts[id] || 0) + 1;
 
       const totalCountPerProduct = {};
@@ -176,11 +175,7 @@ function CreateCart() {
       if (index !== -1) {
         items.splice(index, 1);
 
-
-        
         itemCounts[id] = Math.max(0, (itemCounts[id] || 0) - 1);
-
-
 
         const totalCountPerProduct = {};
         items.forEach((dessert) => {
@@ -203,24 +198,16 @@ function CreateCart() {
           currentProductSpan.textContent = `${currentProductCount}x `;
         }
       }
-      if (this.isCartEmpty()) {
-        renderCards(); // Re-render to show "Add to cart" buttons instead of +/- buttons
-      }
     },
-
 
     getCounts() {
       return items.length;
     },
     getItemCount(id) {
       return itemCounts[id] || 0;
-
     },
     getTotal() {
       return (total = items.reduce((total, item) => total + item.price, 0));
-    },
-    isCartEmpty() {
-      return items.length === 0;
     },
   };
 }
@@ -228,24 +215,31 @@ function CreateCart() {
 const cart = CreateCart();
 /**************************************************************************/
 
-/*Rendrovany Dom dynamicky  podla kondicie -  pozor na postupnost kodu*/
+/*cards render*/
 
 function renderCards() {
-  const isCartEmpty = cart.isCartEmpty();
   cardContainer.innerHTML = data
     .map(
       (item) => `
               <div class="card">
                   <img src="${item.image.desktop}" alt="${item.name}" />
-                  ${
-                    isCartEmpty
-                      ? `<button class="add-to-cart-btn" data-id="${item.id}">Add to cart</button>`
-                      : `<div class="cart-button-active">
-                          <button class="increase-btn" data-id="${item.id}">+</button>
-                          <span class="cart-number-list" data-id="${item.id}">${cart.getItemCount(item.id)}</span>
-                          <button class="decrease-btn" data-id="${item.id}">-</button>
-                      </div>`
-                  }
+                  
+                    
+                       <button class="add-to-cart-btn" data-id="${
+                         item.id
+                       }">Add to cart</button>
+                       <div class="cart-button-active">
+                          <button class="increase-btn" data-id="${
+                            item.id
+                          }">+</button>
+                          <span class="cart-number-list" data-id="${
+                            item.id
+                          }">${cart.getItemCount(item.id)}</span>
+                          <button class="decrease-btn" data-id="${
+                            item.id
+                          }">-</button>
+                      </div>
+                  
                   <p class="card-title">${item.category}</p>
                   <h2 class="card-header">${item.name}</h2>
                   <p class="price">$${item.price.toFixed(2)}</p>
@@ -259,15 +253,9 @@ function updateCartUI() {
   cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
 }
 
-
 /*Call functions for initital render*/
 renderCards();
 updateCartUI();
-
-
-
-
-
 
 // Event delegation nemusis tagetovat primo elemnty staci parent element
 cardContainer.addEventListener("click", (event) => {
@@ -280,15 +268,12 @@ cardContainer.addEventListener("click", (event) => {
     cart.addItem(id, data);
     renderCards();
     updateCartUI();
-   
-  
+    const itemButton = document.querySelector(".cart-button-active");
+    itemButton.style.display = "flex";
   } else if (target.classList.contains("decrease-btn")) {
     const id = Number(target.dataset.id); // Get id directly from the decrease button
     cart.removeFromCart(id, data);
     renderCards();
     updateCartUI();
-   
   }
 });
-
-
