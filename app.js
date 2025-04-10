@@ -114,6 +114,8 @@ const cardContainer = document.querySelector(".product-contianer");
 const productsContainer = document.getElementById("cart-product-contianer");
 const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
+
+
 /*data and variables */
 
 /****************************CART LOGIC - CLOSURE **********************/
@@ -122,11 +124,16 @@ function CreateCart() {
   let items = [];
   let total = 0;
 
+  itemCounts = {};
+
   return {
     addItem(id, data) {
       const product = data.find((item) => item.id === id);
       const { name, price } = product;
       items.push(product);
+
+// Update item counts
+      itemCounts[id] = (itemCounts[id] || 0) + 1;
 
       const totalCountPerProduct = {};
       items.forEach((dessert) => {
@@ -168,6 +175,13 @@ function CreateCart() {
       const index = items.findIndex((item) => item.id === id);
       if (index !== -1) {
         items.splice(index, 1);
+
+
+        itemCounts[id] = Math.max(0, (itemCounts[id] || 0) - 1);
+
+
+
+
         const totalCountPerProduct = {};
         items.forEach((dessert) => {
           totalCountPerProduct[dessert.id] =
@@ -189,10 +203,17 @@ function CreateCart() {
           currentProductSpan.textContent = `${currentProductCount}x `;
         }
       }
+      if (this.isCartEmpty()) {
+        renderCards(); // Re-render to show "Add to cart" buttons instead of +/- buttons
+      }
     },
 
     getCounts() {
       return items.length;
+    },
+    getItemCount(id) {
+      return itemCounts[id] || 0;
+
     },
     getTotal() {
       return (total = items.reduce((total, item) => total + item.price, 0));
@@ -206,7 +227,7 @@ function CreateCart() {
 const cart = CreateCart();
 /**************************************************************************/
 
-/*Render DOM dynamically based on isCartEmpty method*/
+/*Rendrovany Dom dynamicky  podla kondicie -  pozor na postupnost kodu*/
 
 function renderCards() {
   const isCartEmpty = cart.isCartEmpty();
@@ -220,6 +241,7 @@ function renderCards() {
                       ? `<button class="add-to-cart-btn" data-id="${item.id}">Add to cart</button>`
                       : `<div class="cart-button-active">
                           <button class="increase-btn" data-id="${item.id}">+</button>
+                          <span class="cart-number-list" data-id="${item.id}">${cart.getItemCount(item.id)}</span>
                           <button class="decrease-btn" data-id="${item.id}">-</button>
                       </div>`
                   }
@@ -254,10 +276,15 @@ cardContainer.addEventListener("click", (event) => {
     cart.addItem(id, data);
     renderCards();
     updateCartUI();
+   
+  
   } else if (target.classList.contains("decrease-btn")) {
     const id = Number(target.dataset.id); // Get id directly from the decrease button
     cart.removeFromCart(id, data);
     renderCards();
     updateCartUI();
+   
   }
 });
+
+
