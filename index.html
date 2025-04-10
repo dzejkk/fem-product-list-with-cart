@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <title>Frontend Mentor | Product list with cart</title>
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+
+<body>
+   <main>
+    <section class="product-list-container">
+      <h1>Desserts</h1>
+      <div class="product-contianer">
+      </div>
+    </section>
+    <!-------CART--------->
+    <section class="shopping-cart-container">
+      <div class="cart">
+        <h2 class="cart-header">Your cart <span class="number-cart" id="number-cart">(0)</span></h2>
+        <div class="cart-content" id="cart-container">
+          <img src="./assets/images/illustration-empty-cart.svg" alt="ilustration of empty cart">
+          <p>your added items will appear here</p>
+          <div id="cart-product-contianer"></div>
+          <p class="total" id="total"></p>
+        </div>
+      </div>
+    </section>
+   </main>
+</body>
+</html>
