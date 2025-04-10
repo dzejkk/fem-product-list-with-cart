@@ -177,8 +177,8 @@ function CreateCart() {
         items.splice(index, 1);
 
 
+        
         itemCounts[id] = Math.max(0, (itemCounts[id] || 0) - 1);
-
 
 
 
@@ -207,6 +207,7 @@ function CreateCart() {
         renderCards(); // Re-render to show "Add to cart" buttons instead of +/- buttons
       }
     },
+
 
     getCounts() {
       return items.length;
@@ -258,12 +259,15 @@ function updateCartUI() {
   cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
 }
 
-/*Call functions for initital render*/
 
+/*Call functions for initital render*/
 renderCards();
 updateCartUI();
 
-/* Event listeners on buttons*/
+
+
+
+
 
 // Event delegation nemusis tagetovat primo elemnty staci parent element
 cardContainer.addEventListener("click", (event) => {
