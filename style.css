@@ -193,3 +193,10 @@ h1 {
   transform: translateY(-20px);
   cursor: pointer;
 }
+
+
+/*EXEPCTINS*/
+
+.hidden {
+  display: none;
+}

@@ -114,6 +114,7 @@ const cardContainer = document.querySelector(".product-contianer");
 const productsContainer = document.getElementById("cart-product-contianer");
 const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
+const emptyCartImage = document.getElementById("empty-cart-image");
 
 /*data and variables */
 
@@ -155,9 +156,9 @@ function CreateCart() {
         const productHTML = `
         <div id="dessert${id}" class="product">
           <p>
-            <span class="product-count" id="product-count-for-id${id}">${
-          currentProductCount > 1 ? currentProductCount + "x " : ""
-        }</span>${name}
+            <span class="product-count" id="product-count-for-id${id}">
+            ${currentProductCount > 1 ? currentProductCount + "x " : ""}
+            </span>${name}
           </p>
           <p>$${price.toFixed(2)}</p>
         </div>
@@ -215,7 +216,7 @@ function CreateCart() {
 const cart = CreateCart();
 /**************************************************************************/
 
-/*cards render*/
+/*card render - vies skryt malu funkciu do komponenetu ktor rendruje na zaklade prememnnych css klasy*/
 
 function renderCards() {
   cardContainer.innerHTML = data
@@ -253,8 +254,19 @@ function renderCards() {
 }
 
 function updateCartUI() {
+
+  
   numberCart.textContent = `(${cart.getCounts()})`;
   cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
+
+  
+  const itemCount = cart.getCounts();
+  
+  if(itemCount > 0) {
+    emptyCartImage.classList.add('hidden');
+  }else {
+    emptyCartImage.classList.remove('hidden');
+  }
 }
 
 /*Call functions for initital render*/
