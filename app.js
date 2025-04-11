@@ -255,17 +255,17 @@ function renderCards() {
 
 function updateCartUI() {
 
-  
-  numberCart.textContent = `(${cart.getCounts()})`;
-  cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
-
-  
   const itemCount = cart.getCounts();
   
-  if(itemCount > 0) {
+  numberCart.textContent = `(${cart.getCounts()})`;
+
+
+  if (itemCount > 0) {
     emptyCartImage.classList.add('hidden');
+    cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
   }else {
     emptyCartImage.classList.remove('hidden');
+    cartTotal.textContent = "";
   }
 }
 
