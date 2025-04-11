@@ -165,7 +165,13 @@ h1 {
 }
 
 .product {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  grid-template-rows: 1fr;
   border-bottom: 1px solid rgba(0, 0, 0, 0.185);
+
+  justify-content: center;
+  align-items: center;
 }
 
 .number-cart {
@@ -195,8 +201,85 @@ h1 {
 }
 
 
-/*EXEPCTINS*/
+/*CART UI*/
 
 .hidden {
   display: none;
+}
+
+.button-cart-remove {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+
+  justify-self: end;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: var(--Rose-50);
+  border: 1px solid var(--Rose-300);
+}
+
+.product > p {
+  grid-column: 1 / 2;
+}
+
+.product-count {
+  font-weight: var(--fw-700);
+  color: var(--Red);
+  padding-inline-end: 0.75rem;
+}
+
+#total-price-cart {
+  padding-inline-start: 3rem;
+  font-weight: var(--fw-700);
+  font-size: 1.5rem;
+  color: var(--Rose-900);
+
+}
+
+.total {
+  color: var(--Rose-900);
+}
+
+.remove-img {
+  pointer-events: none;  /* ignoring click event preventing fro mcolisons with my listener */
+}
+
+
+/* card text */
+
+.card-number-list {
+  color:var(--Rose-50);
+}
+
+.increase-btn {
+  border: none;
+  border-radius: 50%;
+  background-color: var(--Rose-50);
+  color: var(--Red);
+  cursor: pointer;
+  border: 1px solid var(--Rose-50);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.decrease-btn {
+  border: none;
+  border-radius: 50%;
+  background-color: var(--Rose-50);
+  color: var(--Red);
+  cursor: pointer;
+  border: 1px solid var(--Rose-50);
+  font-weight: 600;
+  font-size: 1rem;
+
+}
+
+.increase-btn:hover, .decrease-btn:hover {
+  color: white;
+  background-color: var(--Rose-300);
+  border-color: var(--Rose-300);
 }

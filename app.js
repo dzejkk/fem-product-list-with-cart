@@ -154,12 +154,18 @@ function CreateCart() {
         const productHTML = `
         <div id="dessert${id}" class="product">
           <p>
-            <span class="product-count" id="product-count-for-id${id}">
-            ${currentProductCount > 1 ? currentProductCount + "x " : ""}
-            </span>${name}
+           ${name}
           </p>
-          <p>$${price.toFixed(2)}</p>
-          <button class="remove-item-btn" data-id="${id}">x</button>
+          <p>
+          <span class="product-count" id="product-count-for-id${id}">
+            ${currentProductCount > 1 ? currentProductCount + "x " : ""}
+            </span>
+          
+          $${price.toFixed(2)}
+          </p>
+          <button class="remove-item-btn button-cart-remove" data-id="${id}">
+          <img class="remove-img" src="./assets/images/icon-remove-item.svg" />
+          </button>
         </div>
       `;
         productsContainer.innerHTML += productHTML;
@@ -229,6 +235,7 @@ function CreateCart() {
 }
 
 const cart = CreateCart();
+
 /**************************************************************************/
 
 /*card render - vies skryt malu funkciu do komponenetu ktor rendruje na zaklade prememnnych css klasy*/
@@ -258,7 +265,7 @@ function renderCards() {
                        : "display:none;"
                    }">
                 <button class="increase-btn" data-id="${item.id}">+</button>
-                <span class="cart-number-list" data-id="${
+                <span class="card-number-list" data-id="${
                   item.id
                 }">${itemCount}</span>
                 <button class="decrease-btn" data-id="${item.id}">-</button>
@@ -272,6 +279,9 @@ function renderCards() {
     .join("");
 }
 
+
+/* UPDATE UI */
+
 function updateCartUI() {
   const itemCount = cart.getCounts();
   
@@ -279,7 +289,7 @@ function updateCartUI() {
 
   if (itemCount > 0) {
     emptyCartImage.classList.add('hidden');
-    cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
+    cartTotal.innerHTML = `<p class="total" id="total">Order total<span id="total-price-cart">$${cart.getTotal().toFixed(2)}</span></p>`;
   } else {
     emptyCartImage.classList.remove('hidden');
     cartTotal.textContent = "";
@@ -289,6 +299,7 @@ function updateCartUI() {
 /*Call functions for initital render*/
 renderCards();
 updateCartUI();
+
 
 
 // Event delegation nemusis tagetovat primo elemnty staci parent element
@@ -314,7 +325,6 @@ cardContainer.addEventListener("click", (event) => {
 
 
 /* CART removing */
-
 productsContainer.addEventListener('click', (e) => {
   const target = e.target;
   
