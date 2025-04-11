@@ -279,19 +279,20 @@ function renderCards() {
     .join("");
 }
 
-
 /* UPDATE UI */
 
 function updateCartUI() {
   const itemCount = cart.getCounts();
-  
+
   numberCart.textContent = `(${itemCount})`;
 
   if (itemCount > 0) {
-    emptyCartImage.classList.add('hidden');
-    cartTotal.innerHTML = `<p class="total" id="total">Order total<span id="total-price-cart">$${cart.getTotal().toFixed(2)}</span></p>`;
+    emptyCartImage.classList.add("hidden");
+    cartTotal.innerHTML = `<p class="total" id="total">Order total<span id="total-price-cart">$${cart
+      .getTotal()
+      .toFixed(2)}</span></p>`;
   } else {
-    emptyCartImage.classList.remove('hidden');
+    emptyCartImage.classList.remove("hidden");
     cartTotal.textContent = "";
   }
 }
@@ -299,8 +300,6 @@ function updateCartUI() {
 /*Call functions for initital render*/
 renderCards();
 updateCartUI();
-
-
 
 // Event delegation nemusis tagetovat primo elemnty staci parent element
 // Card buttons events
@@ -323,22 +322,20 @@ cardContainer.addEventListener("click", (event) => {
   }
 });
 
-
 /* CART removing */
-productsContainer.addEventListener('click', (e) => {
+productsContainer.addEventListener("click", (e) => {
   const target = e.target;
-  
- 
-  if (target.classList.contains('remove-item-btn')) {
+
+  if (target.classList.contains("remove-item-btn")) {
     const id = Number(target.dataset.id);
     cart.clearCartItem(id);
     updateCartUI();
     return;
   }
-  
+
   // If the click was elsewhere, we'll keep the full cart clearing logic
   // This should probably be on a dedicated "Clear Cart" button instead
-  if (target.classList.contains('clear-all-btn')) {
+  if (target.classList.contains("clear-all-btn")) {
     cart.clearCart();
     updateCartUI();
     renderCards();
