@@ -219,31 +219,35 @@ const cart = CreateCart();
 
 function renderCards() {
   cardContainer.innerHTML = data
+
+
     .map(
-      (item) => `
-              <div class="card">
-                  <img src="${item.image.desktop}" alt="${item.name}" />
-                  
-                    
-                       <button class="add-to-cart-btn" data-id="${
-                         item.id
-                       }">Add to cart</button>
-                       <div class="cart-button-active">
-                          <button class="increase-btn" data-id="${
-                            item.id
-                          }">+</button>
-                          <span class="cart-number-list" data-id="${
-                            item.id
-                          }">${cart.getItemCount(item.id)}</span>
-                          <button class="decrease-btn" data-id="${
-                            item.id
-                          }">-</button>
-                      </div>
-                  
-                  <p class="card-title">${item.category}</p>
-                  <h2 class="card-header">${item.name}</h2>
-                  <p class="price">$${item.price.toFixed(2)}</p>
-              </div>`
+      (item) => {
+
+        const itemCount = cart.getItemCount(item.id);
+        const showAddButton = itemCount === 0;
+        const showIncreseDecreaseButton = itemCount > 0;
+
+        return `
+           <div class="card">
+              <img src="${item.image.desktop}" alt="${item.name}" />
+              
+              <button class="add-to-cart-btn" data-id="${item.id}" 
+                     style="${showAddButton ? 'display:block;' : 'display:none;'}">
+                Add to cart
+              </button>
+              <div class="cart-button-active" 
+                   style="${showIncreseDecreaseButton ? 'display:flex;' : 'display:none;'}">
+                <button class="increase-btn" data-id="${item.id}">+</button>
+                <span class="cart-number-list" data-id="${item.id}">${itemCount}</span>
+                <button class="decrease-btn" data-id="${item.id}">-</button>
+              </div>
+              
+              <p class="card-title">${item.category}</p>
+              <h2 class="card-header">${item.name}</h2>
+              <p class="price">$${item.price.toFixed(2)}</p>
+          </div>`;
+      }
     )
     .join("");
 }
@@ -268,8 +272,8 @@ cardContainer.addEventListener("click", (event) => {
     cart.addItem(id, data);
     renderCards();
     updateCartUI();
-    const itemButton = document.querySelector(".cart-button-active");
-    itemButton.style.display = "flex";
+
+   
   } else if (target.classList.contains("decrease-btn")) {
     const id = Number(target.dataset.id); // Get id directly from the decrease button
     cart.removeFromCart(id, data);
