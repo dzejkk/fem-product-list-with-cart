@@ -122,9 +122,7 @@ const emptyCartImage = document.getElementById("empty-cart-image");
 
 function CreateCart() {
   let items = [];
-  let total = 0;
-
-  itemCounts = {};
+  let itemCounts = {};
 
   return {
     addItem(id, data) {
@@ -161,6 +159,7 @@ function CreateCart() {
             </span>${name}
           </p>
           <p>$${price.toFixed(2)}</p>
+          <button class="remove-item-btn" data-id="${id}">x</button>
         </div>
       `;
         productsContainer.innerHTML += productHTML;
@@ -201,6 +200,17 @@ function CreateCart() {
       }
     },
 
+    clearCartItem(id) {
+      items = items.filter((item) => item.id !== id);
+      itemCounts[id] = 0;
+
+      const productToRemove = document.getElementById(`dessert${id}`);
+      if (productToRemove) {
+        productsContainer.removeChild(productToRemove);
+      }
+      renderCards();
+    },
+
     getCounts() {
       return items.length;
     },
@@ -208,7 +218,12 @@ function CreateCart() {
       return itemCounts[id] || 0;
     },
     getTotal() {
-      return (total = items.reduce((total, item) => total + item.price, 0));
+      return items.reduce((total, item) => total + item.price, 0);
+    },
+    clearCart() {
+      items = [];
+      itemCounts = {};
+      productsContainer.innerHTML = "";
     },
   };
 }
@@ -221,26 +236,31 @@ const cart = CreateCart();
 function renderCards() {
   cardContainer.innerHTML = data
 
+    .map((item) => {
+      const itemCount = cart.getItemCount(item.id);
+      const showAddButton = itemCount === 0;
+      const showIncreseDecreaseButton = itemCount > 0;
 
-    .map(
-      (item) => {
-
-        const itemCount = cart.getItemCount(item.id);
-        const showAddButton = itemCount === 0;
-        const showIncreseDecreaseButton = itemCount > 0;
-
-        return `
+      return `
            <div class="card">
               <img src="${item.image.desktop}" alt="${item.name}" />
               
               <button class="add-to-cart-btn" data-id="${item.id}" 
-                     style="${showAddButton ? 'display:block;' : 'display:none;'}">
+                     style="${
+                       showAddButton ? "display:block;" : "display:none;"
+                     }">
                 Add to cart
               </button>
               <div class="cart-button-active" 
-                   style="${showIncreseDecreaseButton ? 'display:flex;' : 'display:none;'}">
+                   style="${
+                     showIncreseDecreaseButton
+                       ? "display:flex;"
+                       : "display:none;"
+                   }">
                 <button class="increase-btn" data-id="${item.id}">+</button>
-                <span class="cart-number-list" data-id="${item.id}">${itemCount}</span>
+                <span class="cart-number-list" data-id="${
+                  item.id
+                }">${itemCount}</span>
                 <button class="decrease-btn" data-id="${item.id}">-</button>
               </div>
               
@@ -248,22 +268,19 @@ function renderCards() {
               <h2 class="card-header">${item.name}</h2>
               <p class="price">$${item.price.toFixed(2)}</p>
           </div>`;
-      }
-    )
+    })
     .join("");
 }
 
 function updateCartUI() {
-
   const itemCount = cart.getCounts();
   
-  numberCart.textContent = `(${cart.getCounts()})`;
-
+  numberCart.textContent = `(${itemCount})`;
 
   if (itemCount > 0) {
     emptyCartImage.classList.add('hidden');
     cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
-  }else {
+  } else {
     emptyCartImage.classList.remove('hidden');
     cartTotal.textContent = "";
   }
@@ -273,7 +290,10 @@ function updateCartUI() {
 renderCards();
 updateCartUI();
 
+
 // Event delegation nemusis tagetovat primo elemnty staci parent element
+// Card buttons events
+
 cardContainer.addEventListener("click", (event) => {
   const target = event.target;
   if (
@@ -284,12 +304,33 @@ cardContainer.addEventListener("click", (event) => {
     cart.addItem(id, data);
     renderCards();
     updateCartUI();
-
-   
   } else if (target.classList.contains("decrease-btn")) {
     const id = Number(target.dataset.id); // Get id directly from the decrease button
     cart.removeFromCart(id, data);
     renderCards();
     updateCartUI();
+  }
+});
+
+
+/* CART removing */
+
+productsContainer.addEventListener('click', (e) => {
+  const target = e.target;
+  
+ 
+  if (target.classList.contains('remove-item-btn')) {
+    const id = Number(target.dataset.id);
+    cart.clearCartItem(id);
+    updateCartUI();
+    return;
+  }
+  
+  // If the click was elsewhere, we'll keep the full cart clearing logic
+  // This should probably be on a dedicated "Clear Cart" button instead
+  if (target.classList.contains('clear-all-btn')) {
+    cart.clearCart();
+    updateCartUI();
+    renderCards();
   }
 });
