@@ -118,7 +118,7 @@ const numberCart = document.getElementById("number-cart");
 
 /*data and variables */
 
-/****************************CART LOGIC - CLOSURE **********************/
+/*********************************CART LOGIC - CLOSURE **************************************/
 
 function CreateCart() {
   let items = [];
@@ -177,7 +177,7 @@ function CreateCart() {
         items.splice(index, 1);
 
 
-        
+
         itemCounts[id] = Math.max(0, (itemCounts[id] || 0) - 1);
 
 
