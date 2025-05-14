@@ -225,6 +225,16 @@ h1 {
 
 .product > p {
   grid-column: 1 / 2;
+  font-weight: var(--fw-600);
+  color: var(--Rose-900);
+  padding-block-end: 0.25rem;
+}
+
+.product > button:hover {
+  background-color: var(--Rose-100);
+}
+.product > button > img:hover {
+  filter: grayscale(1);
 }
 
 .product-count {
@@ -234,7 +244,8 @@ h1 {
 }
 
 #total-price-cart {
-  padding-inline-start: 3rem;
+  margin-inline-start: 11.5rem;
+
   font-weight: var(--fw-700);
   font-size: 1.5rem;
   color: var(--Rose-900);
@@ -242,6 +253,7 @@ h1 {
 
 .total {
   color: var(--Rose-900);
+  text-align: left;
 }
 
 .remove-img {
