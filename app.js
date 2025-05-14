@@ -115,6 +115,7 @@ const productsContainer = document.getElementById("cart-product-contianer");
 const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
 const emptyCartImage = document.getElementById("empty-cart-image");
+const emptyCartParagraph = document.getElementById("empty-cart-paragraph");
 
 /*data and variables */
 
@@ -291,9 +292,11 @@ function updateCartUI() {
     cartTotal.innerHTML = `<p class="total" id="total">Order total<span id="total-price-cart">$${cart
       .getTotal()
       .toFixed(2)}</span></p>`;
+    emptyCartParagraph.textContent = "";
   } else {
     emptyCartImage.classList.remove("hidden");
     cartTotal.textContent = "";
+    emptyCartParagraph.textContent = "your added items will appear here";
   }
 }
 

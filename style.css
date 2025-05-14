@@ -63,17 +63,17 @@ main {
   padding-block: 2rem;
 
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(15, 1fr);
   grid-template-rows: repeat(1, 1fr);
   gap: 8px;
 }
 
 .product-list-container {
-  grid-column: 1 / 7;
+  grid-column: 1 / 11;
 }
 
 .shopping-cart-container {
-  grid-column: 7 / 9;
+  grid-column: 11 / 16;
 }
 
 .product-contianer {
@@ -81,7 +81,7 @@ main {
 }
 
 .cart {
-  width: 100%;
+  width: 90%;
   padding: 1rem;
   background-color: var(--Rose-50);
   border-radius: 12px;
@@ -104,9 +104,9 @@ main {
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(300px, 1fr)
+    minmax(250px, 1fr)
   ); /*auto responsive grid -  pozor treba mat containeri nastavene na percenta !! */
-  gap: 1rem;
+  gap: 0.5rem;
   padding-inline: 2rem;
 }
 
@@ -169,6 +169,7 @@ h1 {
   grid-template-columns: 75% 25%;
   grid-template-rows: 1fr;
   border-bottom: 1px solid rgba(0, 0, 0, 0.185);
+  padding-block: 0.5rem;
 
   justify-content: center;
   align-items: center;
@@ -180,6 +181,7 @@ h1 {
 
 .cart-header {
   color: var(--Red);
+  margin-inline-start: 0.5rem;
 }
 
 .cart-button-active {
@@ -199,7 +201,6 @@ h1 {
   transform: translateY(-20px);
   cursor: pointer;
 }
-
 
 /*CART UI*/
 
@@ -237,7 +238,6 @@ h1 {
   font-weight: var(--fw-700);
   font-size: 1.5rem;
   color: var(--Rose-900);
-
 }
 
 .total {
@@ -245,14 +245,17 @@ h1 {
 }
 
 .remove-img {
-  pointer-events: none;  /* ignoring click event preventing fro mcolisons with my listener */
+  pointer-events: none; /* ignoring click event preventing fro mcolisons with my listener */
 }
 
+#cart-product-contianer {
+  width: 100%;
+}
 
 /* card text */
 
 .card-number-list {
-  color:var(--Rose-50);
+  color: var(--Rose-50);
 }
 
 .increase-btn {
@@ -275,10 +278,10 @@ h1 {
   border: 1px solid var(--Rose-50);
   font-weight: 600;
   font-size: 1rem;
-
 }
 
-.increase-btn:hover, .decrease-btn:hover {
+.increase-btn:hover,
+.decrease-btn:hover {
   color: white;
   background-color: var(--Rose-300);
   border-color: var(--Rose-300);
