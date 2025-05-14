@@ -116,6 +116,7 @@ const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
 const emptyCartImage = document.getElementById("empty-cart-image");
 const emptyCartParagraph = document.getElementById("empty-cart-paragraph");
+const confirmContainer = document.getElementById("confirm-container");
 
 /*data and variables */
 
@@ -259,7 +260,7 @@ function renderCards() {
                      }">
                 Add to cart
               </button>
-              <div class="cart-button-active" 
+              <div class="cart-button-active" data-id="${item.id}" 
                    style="${
                      showIncreseDecreaseButton
                        ? "display:flex;"
@@ -293,10 +294,12 @@ function updateCartUI() {
       .getTotal()
       .toFixed(2)}</span></p>`;
     emptyCartParagraph.textContent = "";
+    confirmContainer.classList.remove("hidden");
   } else {
     emptyCartImage.classList.remove("hidden");
     cartTotal.textContent = "";
     emptyCartParagraph.textContent = "your added items will appear here";
+    confirmContainer.classList.add("hidden");
   }
 }
 

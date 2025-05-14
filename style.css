@@ -298,3 +298,58 @@ h1 {
   background-color: var(--Rose-300);
   border-color: var(--Rose-300);
 }
+
+.carbon-text {
+  color: var(--Rose-900);
+  margin-top: 1rem;
+  padding: 1rem;
+  padding-inline: 3rem;
+  background-color: var(--Rose-100);
+  border-radius: 5px;
+
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  gap: 0.5rem;
+}
+
+.carbon-text > p > span {
+  font-weight: bold;
+}
+
+#confirm-order-button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: var(--Red);
+  color: var(--Rose-50);
+  text-align: center;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#confirm-order-button:hover {
+  filter: brightness(1.2);
+}
+
+/* animations*/
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+
+  from {
+    opacity: 0;
+  }
+}
+
+.cart-button-active [data-id="0"] {
+  animation: appear 0.5s;
+}
+
+.cart-button-active [data-id="1"] {
+  animation: appear 0.5s;
+}
