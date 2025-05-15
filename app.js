@@ -114,7 +114,9 @@ const cardContainer = document.querySelector(".product-contianer");
 const productsContainer = document.getElementById("cart-product-contianer");
 const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
-
+const emptyCartImage = document.getElementById("empty-cart-image");
+const emptyCartParagraph = document.getElementById("empty-cart-paragraph");
+const confirmContainer = document.getElementById("confirm-container");
 
 /*data and variables */
 
@@ -122,9 +124,7 @@ const numberCart = document.getElementById("number-cart");
 
 function CreateCart() {
   let items = [];
-  let total = 0;
-
-  itemCounts = {};
+  let itemCounts = {};
 
   return {
     addItem(id, data) {
@@ -132,7 +132,7 @@ function CreateCart() {
       const { name, price } = product;
       items.push(product);
 
-// Update item counts
+      // Update item counts
       itemCounts[id] = (itemCounts[id] || 0) + 1;
 
       const totalCountPerProduct = {};
@@ -156,11 +156,18 @@ function CreateCart() {
         const productHTML = `
         <div id="dessert${id}" class="product">
           <p>
-            <span class="product-count" id="product-count-for-id${id}">${
-          currentProductCount > 1 ? currentProductCount + "x " : ""
-        }</span>${name}
+           ${name}
           </p>
-          <p>$${price.toFixed(2)}</p>
+          <p>
+          <span class="product-count" id="product-count-for-id${id}">
+            ${currentProductCount > 1 ? currentProductCount + "x " : ""}
+            </span>
+          
+          $${price.toFixed(2)}
+          </p>
+          <button class="remove-item-btn button-cart-remove" data-id="${id}">
+          <img class="remove-img" src="./assets/images/icon-remove-item.svg" />
+          </button>
         </div>
       `;
         productsContainer.innerHTML += productHTML;
@@ -176,11 +183,7 @@ function CreateCart() {
       if (index !== -1) {
         items.splice(index, 1);
 
-
-
         itemCounts[id] = Math.max(0, (itemCounts[id] || 0) - 1);
-
-
 
         const totalCountPerProduct = {};
         items.forEach((dessert) => {
@@ -203,73 +206,110 @@ function CreateCart() {
           currentProductSpan.textContent = `${currentProductCount}x `;
         }
       }
-      if (this.isCartEmpty()) {
-        renderCards(); // Re-render to show "Add to cart" buttons instead of +/- buttons
-      }
     },
 
+    clearCartItem(id) {
+      items = items.filter((item) => item.id !== id);
+      itemCounts[id] = 0;
+
+      const productToRemove = document.getElementById(`dessert${id}`);
+      if (productToRemove) {
+        productsContainer.removeChild(productToRemove);
+      }
+      renderCards();
+    },
 
     getCounts() {
       return items.length;
     },
     getItemCount(id) {
       return itemCounts[id] || 0;
-
     },
     getTotal() {
-      return (total = items.reduce((total, item) => total + item.price, 0));
+      return items.reduce((total, item) => total + item.price, 0);
     },
-    isCartEmpty() {
-      return items.length === 0;
+    clearCart() {
+      items = [];
+      itemCounts = {};
+      productsContainer.innerHTML = "";
     },
   };
 }
 
 const cart = CreateCart();
+
 /**************************************************************************/
 
-/*Rendrovany Dom dynamicky  podla kondicie -  pozor na postupnost kodu*/
+/*card render - vies skryt malu funkciu do komponenetu ktor rendruje na zaklade prememnnych css klasy*/
 
 function renderCards() {
-  const isCartEmpty = cart.isCartEmpty();
   cardContainer.innerHTML = data
-    .map(
-      (item) => `
-              <div class="card">
-                  <img src="${item.image.desktop}" alt="${item.name}" />
-                  ${
-                    isCartEmpty
-                      ? `<button class="add-to-cart-btn" data-id="${item.id}">Add to cart</button>`
-                      : `<div class="cart-button-active">
-                          <button class="increase-btn" data-id="${item.id}">+</button>
-                          <span class="cart-number-list" data-id="${item.id}">${cart.getItemCount(item.id)}</span>
-                          <button class="decrease-btn" data-id="${item.id}">-</button>
-                      </div>`
-                  }
-                  <p class="card-title">${item.category}</p>
-                  <h2 class="card-header">${item.name}</h2>
-                  <p class="price">$${item.price.toFixed(2)}</p>
-              </div>`
-    )
+
+    .map((item) => {
+      const itemCount = cart.getItemCount(item.id);
+      const showAddButton = itemCount === 0;
+      const showIncreseDecreaseButton = itemCount > 0;
+
+      return `
+           <div class="card">
+              <img src="${item.image.desktop}" alt="${item.name}" />
+              
+              <button class="add-to-cart-btn" data-id="${item.id}" 
+                     style="${
+                       showAddButton ? "display:block;" : "display:none;"
+                     }">
+                Add to cart
+              </button>
+              <div class="cart-button-active" data-id="${item.id}" 
+                   style="${
+                     showIncreseDecreaseButton
+                       ? "display:flex;"
+                       : "display:none;"
+                   }">
+                <button class="increase-btn" data-id="${item.id}">+</button>
+                <span class="card-number-list" data-id="${
+                  item.id
+                }">${itemCount}</span>
+                <button class="decrease-btn" data-id="${item.id}">-</button>
+              </div>
+              
+              <p class="card-title">${item.category}</p>
+              <h2 class="card-header">${item.name}</h2>
+              <p class="price">$${item.price.toFixed(2)}</p>
+          </div>`;
+    })
     .join("");
 }
 
-function updateCartUI() {
-  numberCart.textContent = `(${cart.getCounts()})`;
-  cartTotal.textContent = `Order total: $${cart.getTotal().toFixed(2)}`;
-}
+/* UPDATE UI */
 
+function updateCartUI() {
+  const itemCount = cart.getCounts();
+
+  numberCart.textContent = `(${itemCount})`;
+
+  if (itemCount > 0) {
+    emptyCartImage.classList.add("hidden");
+    cartTotal.innerHTML = `<p class="total" id="total">Order total<span id="total-price-cart">$${cart
+      .getTotal()
+      .toFixed(2)}</span></p>`;
+    emptyCartParagraph.textContent = "";
+    confirmContainer.classList.remove("hidden");
+  } else {
+    emptyCartImage.classList.remove("hidden");
+    cartTotal.textContent = "";
+    emptyCartParagraph.textContent = "your added items will appear here";
+    confirmContainer.classList.add("hidden");
+  }
+}
 
 /*Call functions for initital render*/
 renderCards();
 updateCartUI();
 
-
-
-
-
-
 // Event delegation nemusis tagetovat primo elemnty staci parent element
+// Card buttons events
+
 cardContainer.addEventListener("click", (event) => {
   const target = event.target;
   if (
@@ -280,15 +320,30 @@ cardContainer.addEventListener("click", (event) => {
     cart.addItem(id, data);
     renderCards();
     updateCartUI();
-   
-  
   } else if (target.classList.contains("decrease-btn")) {
     const id = Number(target.dataset.id); // Get id directly from the decrease button
     cart.removeFromCart(id, data);
     renderCards();
     updateCartUI();
-   
   }
 });
 
+/* CART removing */
+productsContainer.addEventListener("click", (e) => {
+  const target = e.target;
 
+  if (target.classList.contains("remove-item-btn")) {
+    const id = Number(target.dataset.id);
+    cart.clearCartItem(id);
+    updateCartUI();
+    return;
+  }
+
+  // If the click was elsewhere, we'll keep the full cart clearing logic
+  // This should probably be on a dedicated "Clear Cart" button instead
+  if (target.classList.contains("clear-all-btn")) {
+    cart.clearCart();
+    updateCartUI();
+    renderCards();
+  }
+});
