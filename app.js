@@ -112,6 +112,10 @@ const data = [
 
 const cardContainer = document.querySelector(".product-contianer");
 const productsContainer = document.getElementById("cart-product-contianer");
+const confirmationOrderContianer = document.getElementById(
+  "confirmation-order-contianer"
+);
+
 const cartTotal = document.getElementById("total");
 const numberCart = document.getElementById("number-cart");
 const emptyCartImage = document.getElementById("empty-cart-image");
@@ -149,8 +153,12 @@ function CreateCart() {
         const currentProductSpan = document.getElementById(
           `product-count-for-id${id}`
         );
+        const currentProductParagraph = document.getElementById(
+          `product-count-paragraph-id${id}`
+        );
 
         currentProductSpan.textContent = `${currentProductCount}x `;
+        currentProductParagraph.textContent = `${currentProductCount}x`;
       } else {
         // If it's a new product, add it to the cart
         const productHTML = `
@@ -170,7 +178,24 @@ function CreateCart() {
           </button>
         </div>
       `;
+        const dialogHTML = `
+        <div id="${id}"class="order-mini-card">
+              <img src="" alt="">
+              <div>
+                <h3 class="order-header">${name}</h3>
+                <div class="price-mini-card-per-uinit">
+                  <p id="product-count-paragraph-id${id}">${currentProductCount}x</p>
+                  <p>$${price.toFixed(2)}</p>
+                </div>
+              </div>
+              <div class="final-cena">
+                final cena
+              </div>
+            </div>
+        `;
+
         productsContainer.innerHTML += productHTML;
+        confirmationOrderContianer.innerHTML += dialogHTML;
       }
 
       // console.log(items);
@@ -346,4 +371,22 @@ productsContainer.addEventListener("click", (e) => {
     updateCartUI();
     renderCards();
   }
+});
+
+//// order confirmation dialog
+
+const showDialogButton = document.getElementById("confirm-order-button");
+const closeDialogButton = document.getElementById("confirmation-button-dialog");
+const dialog = document.getElementById("order-confirmation-container");
+
+//show dialog
+
+showDialogButton.addEventListener("click", () => {
+  dialog.showModal();
+});
+
+// close dialog
+
+closeDialogButton.addEventListener("click", () => {
+  dialog.close();
 });
