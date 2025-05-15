@@ -36,6 +36,7 @@
   --Rose-400: hsl(7, 20%, 60%);
   --Rose-500: hsl(12, 20%, 44%);
   --Rose-900: hsl(14, 65%, 9%);
+  --Rose-900-50: hsla(14, 65%, 9%, 0.4);
 
   /*Typography*/
 
@@ -50,6 +51,7 @@ body {
   font-family: "RedHatText";
   font-size: var(--Font-size);
   background-color: var(--Rose-100);
+  transition-behavior: allow-discrete;
 }
 
 /*START - CUBE */
@@ -334,7 +336,7 @@ h1 {
   filter: brightness(1.2);
 }
 
-/* animations*/
+/*MARK:/*ANIMATIONS*/
 
 @keyframes appear {
   to {
@@ -350,17 +352,71 @@ h1 {
   }
 }
 
-/* dialog*/
+@keyframes disapear {
+  from {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(0);
+  }
 
+  to {
+    opacity: 0;
+    scale: 0.7;
+    transform: translateY(+1500px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* dialog*/
 dialog {
   width: 25rem;
   border: none;
   border-radius: 12px;
   background-color: var(--Rose-50);
+  transition: all;
 }
 
 dialog[open] {
   animation: appear 0.5s ease-in-out;
+}
+
+dialog::backdrop {
+  background-color: var(--Rose-900-50);
+}
+
+dialog[data-closing] {
+  display: block;
+  pointer-events: none;
+  inset: 0;
+  animation: disapear 0.5s ease-in-out forwards;
+}
+
+dialog[open]::backdrop {
+  animation: fade-in 0.5s ease-in-out;
+}
+
+dialog[data-closing]::backdrop {
+  display: block;
+  pointer-events: none;
+  inset: 0;
+  animation: fade-out 0.5s ease-in-out forwards;
 }
 
 .dialog-header > h2 {
@@ -381,7 +437,6 @@ dialog[open] {
   padding-block: 0.5rem;
   padding-inline: 0.5rem;
   border-bottom: 1px solid var(--Rose-50);
-  bord
 }
 
 .final-cena {
@@ -412,6 +467,10 @@ dialog[open] {
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+}
+
+#confirmation-button-dialog:hover {
+  filter: brightness(1.4);
 }
 
 .dialog-content {

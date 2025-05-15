@@ -133,7 +133,7 @@ function CreateCart() {
   return {
     addItem(id, data) {
       const product = data.find((item) => item.id === id);
-      const { name, price } = product;
+      const { name, price, image } = product;
       items.push(product);
 
       // Update item counts
@@ -168,7 +168,7 @@ function CreateCart() {
           </p>
           <p>
           <span class="product-count" id="product-count-for-id${id}">
-            ${currentProductCount > 1 ? currentProductCount + "x " : ""}
+            ${currentProductCount}x
             </span>
           
           $${price.toFixed(2)}
@@ -180,7 +180,7 @@ function CreateCart() {
       `;
         const dialogHTML = `
         <div id="${id}"class="order-mini-card">
-              <img src="" alt="">
+              <img src="${image.thumbnail}" alt="">
               <div>
                 <h3 class="order-header">${name}</h3>
                 <div class="price-mini-card-per-uinit">
@@ -388,5 +388,14 @@ showDialogButton.addEventListener("click", () => {
 // close dialog
 
 closeDialogButton.addEventListener("click", () => {
-  dialog.close();
+  dialog.setAttribute("data-closing", "");
+
+  dialog.addEventListener(
+    "animationend",
+    () => {
+      dialog.removeAttribute("data-closing");
+      dialog.close();
+    },
+    { once: true }
+  );
 });
