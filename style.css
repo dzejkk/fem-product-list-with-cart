@@ -439,8 +439,29 @@ dialog[data-closing]::backdrop {
   border-bottom: 1px solid var(--Rose-50);
 }
 
+.total-dialog {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--Rose-100);
+  padding-block: 0.5rem;
+  padding-inline: 0.5rem;
+  border-bottom: 1px solid var(--Rose-50);
+}
+
+.total-confirm-dialog {
+  font-weight: var(--fw-700);
+  font-size: 1.5rem;
+  color: var(--Rose-900);
+}
+
 .final-cena {
   margin-left: auto;
+}
+
+.mini-card-text-wrapper {
+  width: 10rem;
 }
 
 .order-header {

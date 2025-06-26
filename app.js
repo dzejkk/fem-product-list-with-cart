@@ -181,7 +181,7 @@ function CreateCart() {
         const dialogHTML = `
         <div id="${id}"class="order-mini-card">
               <img src="${image.thumbnail}" alt="">
-              <div>
+              <div class="mini-card-text-wrapper">
                 <h3 class="order-header">${name}</h3>
                 <div class="price-mini-card-per-uinit">
                   <p id="product-count-paragraph-id${id}">${currentProductCount}x</p>
@@ -189,9 +189,9 @@ function CreateCart() {
                 </div>
               </div>
               <div class="final-cena">
-                final cena
+                final cena pre produkt
               </div>
-            </div>
+          </div>
         `;
 
         productsContainer.innerHTML += productHTML;
@@ -203,7 +203,7 @@ function CreateCart() {
 
       // document.getElementById("total").textContent = `$${this.getTotal().toFixed(2)}` // moze to byt aj tu ale musis this - operator
     },
-    removeFromCart(id, data) {
+    removeFromCart(id) {
       const index = items.findIndex((item) => item.id === id);
       if (index !== -1) {
         items.splice(index, 1);
@@ -265,7 +265,7 @@ const cart = CreateCart();
 
 /**************************************************************************/
 
-/*card render - vies skryt malu funkciu do komponenetu ktor rendruje na zaklade prememnnych css klasy*/
+/*card render - vies skryt malu funkciu do komponenetu ktora rendruje na zaklade prememnnych css klasy*/
 
 function renderCards() {
   cardContainer.innerHTML = data
@@ -328,6 +328,14 @@ function updateCartUI() {
   }
 }
 
+function updateDialogContent() {
+  const totalCostDiv = document.getElementById("total-confirm-dialog");
+  totalCostDiv.innerHTML = `<p>$${cart.getTotal().toFixed(2)}</p>`;
+  console.log(totalCostDiv);
+}
+
+/* *********************/
+
 /*Call functions for initital render*/
 renderCards();
 updateCartUI();
@@ -383,6 +391,7 @@ const dialog = document.getElementById("order-confirmation-container");
 
 showDialogButton.addEventListener("click", () => {
   dialog.showModal();
+  updateDialogContent();
 });
 
 // close dialog
@@ -395,6 +404,10 @@ closeDialogButton.addEventListener("click", () => {
     () => {
       dialog.removeAttribute("data-closing");
       dialog.close();
+      cart.clearCart();
+      updateCartUI();
+      renderCards();
+      confirmationOrderContianer.innerHTML = "";
     },
     { once: true }
   );
