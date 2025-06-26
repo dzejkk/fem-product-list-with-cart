@@ -452,8 +452,13 @@ dialog[data-closing]::backdrop {
 
 .total-confirm-dialog {
   font-weight: var(--fw-700);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--Rose-900);
+}
+
+.total-dialog > p:first-child {
+  color: var(--Rose-900);
+  font-size: 0.85rem;
 }
 
 .final-cena {

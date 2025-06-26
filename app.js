@@ -145,6 +145,16 @@ function CreateCart() {
           (totalCountPerProduct[dessert.id] || 0) + 1;
       });
 
+      let totalCostPerProduct = 0;
+
+      items.forEach((dessert) => {
+        totalCostPerProduct = totalCountPerProduct[dessert.id] * dessert.price;
+
+        console.log(totalCountPerProduct[dessert.id]);
+        console.log(dessert.price);
+        console.log(totalCostPerProduct);
+      });
+
       const currentProductCount = totalCountPerProduct[product.id];
       const existingProduct = document.getElementById(`dessert${id}`);
 
@@ -168,11 +178,12 @@ function CreateCart() {
           </p>
           <p>
           <span class="product-count" id="product-count-for-id${id}">
-            ${currentProductCount}x
-            </span>
+          ${currentProductCount}x
+          </span>
           
           $${price.toFixed(2)}
-          </p>
+          <span class="product-total-count" id="product-total-cunt-for-id${id}">test</span>
+            </p>
           <button class="remove-item-btn button-cart-remove" data-id="${id}">
           <img class="remove-img" src="./assets/images/icon-remove-item.svg" />
           </button>
