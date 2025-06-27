@@ -197,8 +197,8 @@ h1 {
 
   background-color: var(--Red);
   border-radius: 20px;
-  border-width: 1px;
-  border-color: var(--Rose-900);
+  border: 1px solid transparent;
+
   font-weight: var(--fw-600);
   transform: translateY(-20px);
   cursor: pointer;
@@ -228,7 +228,7 @@ h1 {
 .product > p {
   grid-column: 1 / 2;
   font-weight: var(--fw-600);
-  color: var(--Rose-900);
+  color: var(--Rose-500);
   padding-block-end: 0.25rem;
 }
 
@@ -240,7 +240,7 @@ h1 {
 }
 
 .product-count {
-  font-weight: var(--fw-700);
+  font-weight: var(--Rose-400);
   color: var(--Red);
   padding-inline-end: 0.75rem;
 }
@@ -501,4 +501,11 @@ dialog[data-closing]::backdrop {
 
 .dialog-content {
   padding: 0.875rem;
+}
+
+/* utility */
+
+.product-total-count {
+  color: var(--Rose-900);
+  padding-inline-start: 0.5rem;
 }

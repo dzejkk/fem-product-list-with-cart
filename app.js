@@ -145,17 +145,8 @@ function CreateCart() {
           (totalCountPerProduct[dessert.id] || 0) + 1;
       });
 
-      let totalCostPerProduct = 0;
-
-      items.forEach((dessert) => {
-        totalCostPerProduct = totalCountPerProduct[dessert.id] * dessert.price;
-
-        console.log(totalCountPerProduct[dessert.id]);
-        console.log(dessert.price);
-        console.log(totalCostPerProduct);
-      });
-
       const currentProductCount = totalCountPerProduct[product.id];
+      const totalCostPerProduct = currentProductCount * product.price;
       const existingProduct = document.getElementById(`dessert${id}`);
 
       // If product already exists in cart, update the count
@@ -166,9 +157,20 @@ function CreateCart() {
         const currentProductParagraph = document.getElementById(
           `product-count-paragraph-id${id}`
         );
+        const currentProductTotalCost = document.getElementById(
+          `product-total-cunt-for-id${id}`
+        );
+        const dialogFinalCena = document.getElementById(`final-cena${id}`);
 
         currentProductSpan.textContent = `${currentProductCount}x `;
         currentProductParagraph.textContent = `${currentProductCount}x`;
+        currentProductTotalCost.textContent = `$${totalCostPerProduct.toFixed(
+          2
+        )}`;
+
+        if (dialogFinalCena) {
+          dialogFinalCena.textContent = `$${totalCostPerProduct.toFixed(2)}`;
+        }
       } else {
         // If it's a new product, add it to the cart
         const productHTML = `
@@ -176,13 +178,15 @@ function CreateCart() {
           <p>
            ${name}
           </p>
-          <p>
+          <p id="color-500">
           <span class="product-count" id="product-count-for-id${id}">
           ${currentProductCount}x
           </span>
           
-          $${price.toFixed(2)}
-          <span class="product-total-count" id="product-total-cunt-for-id${id}">test</span>
+          @$${price.toFixed(2)}
+          <span class="product-total-count" id="product-total-cunt-for-id${id}">$${totalCostPerProduct.toFixed(
+          2
+        )}</span>
             </p>
           <button class="remove-item-btn button-cart-remove" data-id="${id}">
           <img class="remove-img" src="./assets/images/icon-remove-item.svg" />
@@ -199,8 +203,8 @@ function CreateCart() {
                   <p>$${price.toFixed(2)}</p>
                 </div>
               </div>
-              <div class="final-cena">
-                final cena pre produkt
+              <div class="final-cena" id="final-cena${id}">
+              $${totalCostPerProduct.toFixed(2)}
               </div>
           </div>
         `;
